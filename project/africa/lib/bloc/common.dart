@@ -4,10 +4,7 @@ abstract class MyState {}
 
 class StateUnInitialized extends MyState {
   @override
-  String toString() {
-    // TODO: implement toString
-    return 'UnInitialized';
-  }
+  String toString() => 'UnInitialized';
 }
 
 class StateLoading extends MyState {
@@ -15,10 +12,7 @@ class StateLoading extends MyState {
   StateLoading({required this.title});
 
   @override
-  String toString() {
-    // TODO: implement toString
-    return '$title Loading...';
-  }
+  String toString() => '$title Loading...';
 }
 
 class StateError extends MyState {
@@ -26,8 +20,5 @@ class StateError extends MyState {
   StateError({required this.message});
 
   @override
-  String toString() {
-    // TODO: implement toString
-    return 'Error: $message';
-  }
+  String toString() => 'Error: $message';
 }

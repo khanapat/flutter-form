@@ -20,7 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF00A6E6),
-        // เป็นเส้นแบ่งระหว่าง appbar กับ body
         elevation: 0,
       ),
       body: Stack(
@@ -42,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
+              child: buildBody(),
               height: MediaQuery.of(context).size.height * 0.7,
               width: double.infinity,
               decoration: BoxDecoration(
@@ -51,48 +51,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   topRight: Radius.circular(50),
                 ),
               ),
-              child: buildBody(context),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget buildBody(context) => Form(
+  Widget buildBody() => Form(
         key: key,
         child: Container(
           padding: EdgeInsets.all(20),
-          // color: Colors.yellow,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
               buildEmailInput(),
               buildPasswordInput(),
-              buildLoginButton(context),
+              buildLoginButton(),
             ],
           ),
         ),
       );
 
-  Widget buildLoginButton(context) => Container(
+  Widget buildLoginButton() => Container(
         margin: EdgeInsets.only(top: 30),
         width: MediaQuery.of(context).size.width * 0.7,
         height: 50,
         child: ElevatedButton(
-          // ปรับความสวยของปุ่ม
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-          ),
+              shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          )),
           child: BlocConsumer<AuthenBloc, MyState>(
-            // builder: (context, state) {
-            //   if (state is StateLoading) {
-            //     return
-            //   }
-            // },
             builder: (context, state) => state is StateLoading ? Text('กำลังเข้าสู่ระบบ...') : Text('เข้าสู่ระบบ'),
             listener: (context, state) {
               if (state is AuthenLoginStateSuccess) {
@@ -135,42 +126,36 @@ class _HomeScreenState extends State<HomeScreen> {
             // setState(() => isRequest = false);
 
             // if (response.statusCode != 200) {
-            //   showDialog(
-            //     context: context,
-            //     builder: (_) => AlertDialog(
-            //       content: Text('อีเมลหรือรหัสผ่านไม่ถูกต้อง'),
-            //       actions: [
-            //         TextButton(
-            //           onPressed: () => Navigator.of(context).pop(),
-            //           child: Text('ตกลง'),
-            //         ),
-            //       ],
-            //     ),
-            //   );
+            // showDialog(
+            //   context: context,
+            //   builder: (_) => AlertDialog(
+            //     content: Text('อีเมลหรือรหัสผ่านไม่ถูกต้อง'),
+            //     actions: [
+            //       TextButton(
+            //         onPressed: () => Navigator.of(context).pop(),
+            //         child: Text('ตกลง'),
+            //       ),
+            //     ],
+            //   ),
+            // );
             //   return;
             // }
 
-            // final authUser = AuthUser.fromJson(jsonDecode(response.body));
-            // Navigator.of(context).push(
-            //   MaterialPageRoute(
-            //     builder: (_) => BrowseScreen(response: response),
-            //     builder: (_) => BrowseScreen(),
-            //   ),
-            // );
+            //final authUser = AuthUser.fromJson(jsonDecode(response.body));
             // Navigator.of(context).pushNamed('/browse');
           },
         ),
       );
 
   Widget buildPasswordInput() => Container(
-        // margin: EdgeInsets.all(10),
-        margin: EdgeInsets.only(
-          left: 10,
-          top: 30,
-          right: 10,
-        ),
+        margin: EdgeInsets.only(left: 10, top: 30, right: 10),
         child: TextFormField(
           obscureText: true,
+          validator: (value) {
+            value ??= '';
+            if (value.isEmpty) return 'กรุณากรอกรหัสผ่าน';
+            //if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
+          },
           controller: passwordController,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
@@ -181,36 +166,27 @@ class _HomeScreenState extends State<HomeScreen> {
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
-          validator: (value) {
-            value ??= '';
-            if (value.isEmpty) return 'กรุณากรอกรหัสผ่าน';
-          },
         ),
       );
 
   Widget buildEmailInput() => Container(
-        // margin: EdgeInsets.all(10),
-        margin: EdgeInsets.only(
-          left: 10,
-          top: 30,
-          right: 10,
-        ),
+        margin: EdgeInsets.only(left: 10, top: 30, right: 10),
         child: TextFormField(
+          validator: (value) {
+            value ??= '';
+            if (value.isEmpty) return 'กรุณากรอกอีเมล';
+            //if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
+          },
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
+            prefixIcon: Icon(Icons.person),
             labelText: 'อีเมล',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25),
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
-          validator: (value) {
-            value ??= '';
-            if (value.isEmpty) return 'กรุณากรอกอีเมล';
-            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
-          },
         ),
       );
 }
