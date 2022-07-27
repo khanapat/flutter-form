@@ -18,3 +18,4 @@ samples, guidance on mobile development, and a full API reference.
 flutter create africa
 dart migrate --apply-changes
 flutter pub add flutter_bloc (ติดตั้ง extension bloc)
+flutter pub add http

@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:africa/models/animal.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:africa/bloc/common.dart';
+import 'package:http/http.dart' as http;
 
 class AnimalBloc extends Bloc<MyEvent, MyState> {
   AnimalBloc() : super(StateUnInitialized());
@@ -8,6 +12,23 @@ class AnimalBloc extends Bloc<MyEvent, MyState> {
   @override
   Stream<MyState> mapEventToState(MyEvent event) async* {
     // TODO: implement mapEventToState
+    if (event is AnimalGetEvent) {
+      yield StateLoading(title: '');
+
+      final response = await http.get(
+        Uri.parse('https://techcoach.azurewebsites.net/africa/animals'),
+        headers: {'Authorization': 'Bearer ${event.jwtToken}'},
+      );
+
+      if (response.statusCode != HttpStatus.ok) {
+        yield StateError(message: response.statusCode.toString());
+        return;
+      }
+
+      final json = jsonDecode(response.body) as List;
+      final animals = json.map((e) => Animal.fromJson(e)).toList();
+      yield AnimalGetStateSuccess(animals: animals);
+    }
   }
 }
 

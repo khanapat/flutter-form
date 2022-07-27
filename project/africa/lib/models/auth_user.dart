@@ -7,6 +7,7 @@ class AuthUser {
   String email;
   Gender gender;
   String jwtToken;
+
   AuthUser({
     required this.id,
     required this.firstName,

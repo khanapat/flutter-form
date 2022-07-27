@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF00A6E6),
+        // เป็นเส้นแบ่งระหว่าง appbar กับ body
         elevation: 0,
       ),
       body: Stack(
@@ -62,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         key: key,
         child: Container(
           padding: EdgeInsets.all(20),
+          // color: Colors.yellow,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -79,11 +81,17 @@ class _HomeScreenState extends State<HomeScreen> {
         width: MediaQuery.of(context).size.width * 0.7,
         height: 50,
         child: ElevatedButton(
+          // ปรับความสวยของปุ่ม
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           )),
           child: BlocConsumer<AuthenBloc, MyState>(
+            // builder: (context, state) {
+            //   if (state is StateLoading) {
+            //     return
+            //   }
+            // },
             builder: (context, state) => state is StateLoading ? Text('กำลังเข้าสู่ระบบ...') : Text('เข้าสู่ระบบ'),
             listener: (context, state) {
               if (state is AuthenLoginStateSuccess) {
@@ -142,6 +150,12 @@ class _HomeScreenState extends State<HomeScreen> {
             // }
 
             //final authUser = AuthUser.fromJson(jsonDecode(response.body));
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (_) => BrowseScreen(response: response),
+            //     builder: (_) => BrowseScreen(),
+            //   ),
+            // );
             // Navigator.of(context).pushNamed('/browse');
           },
         ),
@@ -154,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           validator: (value) {
             value ??= '';
             if (value.isEmpty) return 'กรุณากรอกรหัสผ่าน';
-            //if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
+            // if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
           },
           controller: passwordController,
           keyboardType: TextInputType.text,
@@ -170,17 +184,18 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Widget buildEmailInput() => Container(
+        // margin: EdgeInsets.all(10),
         margin: EdgeInsets.only(left: 10, top: 30, right: 10),
         child: TextFormField(
           validator: (value) {
             value ??= '';
             if (value.isEmpty) return 'กรุณากรอกอีเมล';
-            //if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
+            if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'อีเมลไม่ถูกต้อง';
           },
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.person),
+            prefixIcon: Icon(Icons.account_circle),
             labelText: 'อีเมล',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25),

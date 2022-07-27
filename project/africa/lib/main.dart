@@ -1,3 +1,4 @@
+import 'package:africa/bloc/animal_bloc.dart';
 import 'package:africa/bloc/authen_bloc.dart';
 import 'package:africa/screens/browse_screen.dart';
 import 'package:africa/screens/home_screen.dart';
@@ -8,6 +9,7 @@ void main() => runApp(MainApp());
 
 class MainApp extends StatelessWidget {
   final authenBloc = AuthenBloc();
+  final animalBloc = AnimalBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class MainApp extends StatelessWidget {
         '/browse': (context) => MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: authenBloc),
+                BlocProvider.value(value: animalBloc),
               ],
               child: BrowseScreen(),
             ),

@@ -11,16 +11,11 @@ void main() {
     'rice': '1kg',
   };
   const addGrains = true;
-  var shoppingList = {};
-  if (bananas > 0) {
-    shoppingList['bananas'] = bananas;
-  }
-  if (apples > 0) {
-    shoppingList['apples'] = apples;
-  }
-  if (addGrains) {
-    shoppingList.addAll(grains);
-  }
+  var shoppingList = {
+    if (bananas > 0) 'bananas' = bananas;
+    if (apples > 0) 'apples' = apples;
+    if (addGrains > 0) ...grains;
+  };
   print(shoppingList);
   // prints {bananas: 5, apples: 6, pasta: 500g, rice: 1kg}
 }
